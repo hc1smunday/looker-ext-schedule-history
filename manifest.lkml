@@ -1,12 +1,12 @@
-project_name: "schedule-history-extension"
+project_name: "schedule-history"
 
-application: schedule_history {
+application: schedule-history {
   label: "Schedule History"
-  url: "https://localhost:8080/bundle.js"
+  url: "https://localhost:8080/dist/bundle.js"
   entitlements: {
-    core_api_methods: ["scheduled_plan", "all_scheduled_plans", "scheduled_plan_run_once"]
     navigation: yes
     use_embeds: yes
+    use_clipboard: yes
+    core_api_methods: ["scheduled_plan", "all_scheduled_plans", "scheduled_plan_run_once"]
   }
 }
-c

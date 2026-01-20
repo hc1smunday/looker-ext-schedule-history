@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { ExtensionContext } from '@looker/extension-sdk-react';
-import { Box, Button, ButtonGroup, FieldText, Space, Spinner, Table, TableHead, TableRow, TableHeaderCell, TableBody, TableDataCell } from '@looker/components';
-import { IScheduledPlan } from '@looker/sdk';
+import React, {useEffect, useState} from 'react';
+import {ExtensionContext40} from '@looker/extension-sdk-react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  FieldText,
+  Space,
+  Spinner,
+  Table,
+  TableBody,
+  TableDataCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow
+} from '@looker/components';
+import {IScheduledPlan} from '@looker/sdk';
 
-type FilterType = 'all' | 'success' | 'failure';
+type FilterType = 'all' | 'in_progress' | 'success' | 'failure';
 
 export const ScheduleHistory: React.FC = () => {
   const { core40SDK } = React.useContext(ExtensionContext);
@@ -14,6 +27,7 @@ export const ScheduleHistory: React.FC = () => {
 
   const fetchSchedules = async () => {
     setLoading(true);
+
     try {
       if (scheduleId) {
         const result = await core40SDK.ok(core40SDK.scheduled_plan(scheduleId));
@@ -26,6 +40,7 @@ export const ScheduleHistory: React.FC = () => {
       console.error('Error fetching schedules:', error);
       setSchedules([]);
     }
+
     setLoading(false);
   };
 
@@ -34,10 +49,24 @@ export const ScheduleHistory: React.FC = () => {
   }, [scheduleId]);
 
   const filteredSchedules = schedules.filter(schedule => {
-    if (filter === 'all') return true;
+    if (filter === 'all') {
+      return true;
+    }
+
     const lastStatus = schedule.last_run_status;
-    if (filter === 'success') return lastStatus === 'success';
-    if (filter === 'failure') return lastStatus === 'failure' || lastStatus === 'error';
+
+    if (filter === 'in_progress') {
+      return lastStatus === 'in_progress';
+    }
+
+    if (filter === 'success') {
+      return lastStatus === 'success';
+    }
+
+    if (filter === 'failure') {
+      return lastStatus === 'failure' || lastStatus === 'error';
+    }
+
     return true;
   });
 
@@ -56,14 +85,13 @@ export const ScheduleHistory: React.FC = () => {
       <Box mt="medium">
         <ButtonGroup value={filter} onChange={setFilter}>
           <Button value="all">All</Button>
+          <Button value="in_progress">Running</Button>
           <Button value="success">Successful</Button>
           <Button value="failure">Failure</Button>
         </ButtonGroup>
       </Box>
 
-      {loading ? (
-        <Box mt="large"><Spinner /></Box>
-      ) : (
+      {loading ? (<Box mt="large"><Spinner /></Box>) : (
         <Box mt="large">
           <Table>
             <TableHead>
@@ -81,12 +109,9 @@ export const ScheduleHistory: React.FC = () => {
                   <TableDataCell>{schedule.name}</TableDataCell>
                   <TableDataCell>{schedule.last_run_at || 'Never'}</TableDataCell>
                   <TableDataCell>{schedule.last_run_status || 'N/A'}</TableDataCell>
-                </TableRow>
-              ))}
+                </TableRow>))}
             </TableBody>
           </Table>
-        </Box>
-      )}
-    </Box>
-  );
+        </Box>)}
+    </Box>);
 };

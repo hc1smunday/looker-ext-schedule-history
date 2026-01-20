@@ -1,14 +1,14 @@
 import React from 'react';
-import { ExtensionProvider } from '@looker/extension-sdk-react';
-import { ComponentsProvider } from '@looker/components';
-import { ScheduleHistory } from './ScheduleHistory';
+import {ExtensionProvider40} from '@looker/extension-sdk-react';
+import {ComponentsProvider} from '@looker/components';
+import {ScheduleHistory} from './ScheduleHistory';
 
 export const App: React.FC = () => {
   return (
-    <ExtensionProvider>
+    <ExtensionProvider40>
       <ComponentsProvider>
         <ScheduleHistory />
       </ComponentsProvider>
-    </ExtensionProvider>
+    </ExtensionProvider40>
   );
 };

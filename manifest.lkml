@@ -1,9 +1,9 @@
 project_name: "schedule-history"
 
-application: schedule_history {
+application: schedule-history {
   label: "Schedule History"
   file: "bundle.js"
-  # url: "https://localhost:8080/bundle.js"
+  # url: "https://localhost:8080/dist/bundle.js"
   entitlements: {
     navigation: yes
     use_embeds: yes

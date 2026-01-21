@@ -8,7 +8,7 @@ export default defineConfig({
     https: true
   },
   build: {
-    outDir: 'dist',
+    outDir: './',
     lib: {
       entry: 'src/index.tsx',
       formats: ['es'],
